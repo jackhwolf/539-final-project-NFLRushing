@@ -101,7 +101,6 @@ class ApproximationData:
             mat.loc[:,k] = v.inverse_transform(mat[k].to_numpy().reshape(-1, 1))
         return mat
 
-
 ''' class to represent data for classification task when we want to
 predict if yards >= yardage_cutoff '''
 class ClassificationData(ApproximationData):

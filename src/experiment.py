@@ -1,11 +1,27 @@
-from data import ClassificationData, ApproximationData
-from data import BuildData
+from src.data import ClassificationData, ApproximationData
+from src.data import BuildData
 import models
 import numpy as np
+import os
+import json
+import time
 
-
-def experiment(*modelargs, **dataparams):
-    return Experiment(*modelargs, **dataparams).run()
+def run_experiment(params):
+    reports = []
+    L = len(params)
+    for i, p in enumerate(params):
+        print(p)
+        report = Experiment(*p[0], **p[1]).run()
+        reports.append(report)
+        print(f"========{i+1}/{L}========")
+    out = {}
+    for i in range(len(params)):
+        out[i] = {'params': params[i], 'report': reports[i]}
+    print(os.getcwd())
+    fpath = os.path.join('Results', str(int(time.time()))) + '.json'
+    with open(fpath, 'a') as fp:
+        fp.write(json.dumps(out, indent=4))
+    return fpath
 
 class Experiment:
 
@@ -26,14 +42,12 @@ class Experiment:
             (train_x, train_y), (test_x, test_y) = data.train_test_split(tr_perc=0.05)
         final_loss = model.learn(train_x, train_y)
         preds = model.predict(train_x)
-        return self._report(data, model, final_loss, self._isclose(preds, train_x)) 
+        return self._report(final_loss, self._isclose(preds, train_x)) 
 
-    def _report(self, data, model, final_loss, acc):
+    def _report(self, final_loss, acc):
         out = {
-            'data': data,
-            'model': model,
-            'final_loss': final_loss, 
-            'accuracy': acc,
+            'final_loss': str(final_loss), 
+            'accuracy': str(acc),
         }
         return out
 
