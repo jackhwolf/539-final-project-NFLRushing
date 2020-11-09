@@ -1,0 +1,22 @@
+{
+    "features": [
+        "X",
+        "Y",
+        "S",
+        "A",
+        "Dir",
+        "Dis",
+        "YardLine",
+        "Down",
+        "Distance",
+        "FieldPosition",
+        "HomeScoreBeforePlay",
+        "VisitorScoreBeforePlay",
+        "OffenseFormation",
+        "OffensePersonnel",
+        "DefendersInTheBox",
+        "PlayerHeight",
+        "PlayerWeight"
+    ],
+    "label": "Yards"
+}
