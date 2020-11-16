@@ -19,6 +19,8 @@ def BuildData(**inp):
         return ApproximationData(tov)
     raise ValueError("`task` must be in {approximation, classification}")
 
+TR_PERC = 0.25  # I would like to train on 75-80% of data but it is too large
+
 ''' base class & class to represent data for approximation task '''
 class ApproximationData:
 
@@ -45,7 +47,7 @@ class ApproximationData:
         return proc
 
     # returns 2 tuples (train_x, train_y), (test_x, test_y)
-    def train_test_split(self, tr_perc=0.7):
+    def train_test_split(self, tr_perc=TR_PERC):
         tr_mask = np.array([False] * self.N)
         K = int(self.N * tr_perc)
         tr_mask[:K] = True
@@ -110,7 +112,7 @@ class ClassificationData(ApproximationData):
         self.yardage_cutoff = yardage_cutoff
         self._cutoff()
 
-    def balanced_train_test_split(self, tr_perc=0.7):
+    def balanced_train_test_split(self, tr_perc=TR_PERC):
         tr_mask = np.array([False] * self.N)
         y = self.processed_data[self.label]
         vc = y.value_counts()

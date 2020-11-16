@@ -37,9 +37,9 @@ class Experiment:
         model = getattr(module, self.modelargs[0])
         model = getattr(model, self.modelargs[0])(indims, outdims, *self.modelargs[1:])
         if isinstance(data, ClassificationData):
-            (train_x, train_y), (test_x, test_y) = data.balanced_train_test_split(tr_perc=0.05)
+            (train_x, train_y), (test_x, test_y) = data.balanced_train_test_split()
         else:
-            (train_x, train_y), (test_x, test_y) = data.train_test_split(tr_perc=0.05)
+            (train_x, train_y), (test_x, test_y) = data.train_test_split()
         final_loss = model.learn(train_x, train_y)
         preds = model.predict(train_x)
         return self._report(final_loss, self._isclose(preds, train_x)) 
